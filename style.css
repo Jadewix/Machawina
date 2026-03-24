@@ -95,10 +95,16 @@ body {
 }
 
 /* The exact orange underline spanning only the text */
-.main-category-title span {
+.main-category-title .title-text {
     border-bottom: 3px solid var(--orange);
     display: inline-block;
     padding-bottom: 2px;
+}
+
+.flex-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
 }
 
 .sub-category-title {
@@ -145,6 +151,30 @@ body {
     font-size: 1.05rem;
     font-weight: 700;
     white-space: nowrap;
+}
+
+.split-price {
+    display: inline-flex;
+    align-items: center;
+}
+
+.price-left, .price-right {
+    width: 60px;
+    flex-shrink: 0;
+}
+
+.price-left {
+    text-align: center;
+}
+
+.price-right {
+    text-align: center;
+}
+
+.price-sep {
+    width: 14px;
+    flex-shrink: 0;
+    text-align: center;
 }
 
 /* --- RTL (Arabic) Support --- */

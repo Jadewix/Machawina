@@ -121,7 +121,21 @@ function renderItems(items, container) {
 
         const priceSpan = document.createElement('span');
         priceSpan.className = 'item-price';
-        priceSpan.textContent = item.price.includes('X') ? `$${item.price}` : `$${item.price}`;
+
+        if (item.price.includes('/')) {
+            const parts = item.price.split('/').map(p => p.trim());
+            const p1 = parts[0].toLowerCase() === 'x' ? 'x' : `$${parts[0]}`;
+            const p2 = parts[1].toLowerCase() === 'x' ? 'x' : `${parts[1]}`;
+            
+            priceSpan.classList.add('split-price');
+            priceSpan.innerHTML = `
+                <span class="price-left">${p1}</span>
+                <span class="price-sep">/</span>
+                <span class="price-right">${p2}</span>
+            `;
+        } else {
+            priceSpan.textContent = item.price.toUpperCase() === 'X' ? 'X' : `$${item.price}`;
+        }
 
         div.appendChild(nameSpan);
         div.appendChild(dotSpan);
@@ -139,7 +153,18 @@ function renderCategoryList(dataList, container) {
 
         const title = document.createElement('h2');
         title.className = 'main-category-title';
-        title.innerHTML = `<span>${currentLang === 'en' ? category.title_en : category.title_ar}</span>`;
+        let titleInner = `<span class="title-text">${currentLang === 'en' ? category.title_en : category.title_ar}</span>`;
+        if (category.id === 'alcoholic_drinks') {
+            title.classList.add('flex-title');
+            titleInner += `
+                <div class="split-price category-right-label" style="font-size: 0.95rem; font-family: var(--font-item); font-weight: 700; opacity: 0.8; margin-bottom: 2px;">
+                    <span class="price-left" style="border:none;">GLS</span>
+                    <span class="price-sep" style="border:none;">/</span>
+                    <span class="price-right" style="border:none;">BTL</span>
+                </div>
+            `;
+        }
+        title.innerHTML = titleInner;
         catDiv.appendChild(title);
 
         if (category.subcategories) {
