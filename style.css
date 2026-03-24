@@ -179,7 +179,6 @@ body {
 
 /* --- RTL (Arabic) Support --- */
 body.rtl { direction: rtl; }
-body.rtl .lang-btn { right: auto; left: 20px; }
 
 /* ==============================================================================
    MOBILE RESPONSIVE LAYOUT (Locked in 2 Columns)
@@ -212,11 +211,6 @@ body.rtl .lang-btn { right: auto; left: 20px; }
         right: 10px;
         font-size: 0.8rem;
         padding: 3px 12px;
-    }
-
-    body.rtl .lang-btn {
-        right: auto;
-        left: 10px;
     }
 
     /* Mobile Graphics: Resized to fit perfectly on the edges of phone screens */
