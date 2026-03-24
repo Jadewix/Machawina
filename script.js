@@ -157,10 +157,10 @@ function renderCategoryList(dataList, container) {
         if (category.id === 'alcoholic_drinks') {
             title.classList.add('flex-title');
             titleInner += `
-                <div class="split-price category-right-label" style="font-size: 0.95rem; font-family: var(--font-item); font-weight: 700; opacity: 0.8; margin-bottom: 2px;">
-                    <span class="price-left" style="border:none;">GLS</span>
-                    <span class="price-sep" style="border:none;">/</span>
-                    <span class="price-right" style="border:none;">BTL</span>
+                <div class="split-price category-right-label">
+                    <span class="price-left">GLS</span>
+                    <span class="price-sep">/</span>
+                    <span class="price-right">BTL</span>
                 </div>
             `;
         }
