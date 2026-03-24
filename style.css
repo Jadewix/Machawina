@@ -22,6 +22,19 @@ body {
     min-height: 100vh;
 }
 
+/* --- Corner Graphics exactly like the screenshots --- */
+.corner-graphic {
+    position: absolute; /* Attaches to the full page length */
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.35; /* Perfect watermark visibility */
+}
+
+.img-tomato { top: 20px; left: -30px; width: 220px; }
+.img-bbq { top: 20px; right: -40px; width: 300px; }
+.img-cup { bottom: 20px; left: -20px; width: 200px; }
+.img-garlic { bottom: 20px; right: -20px; width: 200px; }
+
 /* --- Language Button --- */
 .lang-btn {
     position: absolute;
@@ -47,43 +60,41 @@ body {
     margin: 0 auto;
     padding: 60px 30px;
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Keeps text above pictures */
 }
 
-/* Menu Row Blocks */
-.menu-row {
+.menu-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr; /* Strict 50/50 Split */
     gap: 60px;
-    margin-bottom: 70px;
 }
 
 .column {
+    min-width: 0;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    gap: 30px;
-    min-width: 0;
 }
 
 .main-logo {
     width: 100%;
     max-width: 260px;
+    margin-bottom: 40px;
 }
 
 /* --- Typography & Categories --- */
 .category-block {
-    width: 100%;
+    margin-bottom: 35px;
 }
 
 .main-category-title {
     font-family: var(--font-section);
     font-size: 1.8rem;
     color: var(--navy);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     line-height: 1.2;
 }
 
+/* The exact orange underline spanning only the text */
 .main-category-title span {
     border-bottom: 3px solid var(--orange);
     display: inline-block;
@@ -95,8 +106,8 @@ body {
     font-size: 1rem;
     color: var(--orange);
     text-transform: uppercase;
-    margin-top: 20px;
-    margin-bottom: 12px;
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .sub-category-title span {
@@ -105,38 +116,22 @@ body {
     padding-bottom: 2px;
 }
 
-/* --- DELIVERY BANNER STYLING (FIXED COLOR) --- */
-.delivery-banner {
-    color: #FFFFFF; /* White text */
-    background-color: var(--orange); /* Brand Orange background */
-    font-weight: 700;
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    padding: 8px 15px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-bottom: 20px;
-    margin-top: -5px;
-    letter-spacing: 0.5px;
-}
-
 /* --- Items & Dotted Lines --- */
 .menu-item {
     display: flex;
     justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 12px;
+    align-items: flex-end; /* Aligns text to the bottom of the dots */
+    margin-bottom: 6px;
     width: 100%;
 }
 
 .item-name {
     font-size: 1.05rem;
     font-weight: 700;
-    white-space: normal;
-    flex-shrink: 1;
-    line-height: 1.1;
+    white-space: nowrap;
 }
 
+/* THE DOTTED LINES ARE BACK */
 .item-dots {
     flex-grow: 1;
     border-bottom: 2px dotted var(--navy);
@@ -144,76 +139,59 @@ body {
     margin: 0 8px;
     position: relative;
     top: -6px;
-    min-width: 10px;
 }
 
 .item-price {
     font-size: 1.05rem;
     font-weight: 700;
     white-space: nowrap;
-    flex-shrink: 0;
-}
-
-/* --- DUAL-PRICE COLUMN STYLING (GLS/BTL) --- */
-.col-header-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 15px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    color: var(--navy);
-    margin-bottom: 10px;
-    margin-top: -5px;
-}
-
-.col-header-row .header-text { margin-right: auto; color: var(--navy); }
-.col-header-row span.price-col { width: 50px; text-align: right; color: var(--navy); }
-
-.item-with-cols {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    margin-bottom: 12px;
-    width: 100%;
-}
-
-.item-with-cols .prices {
-    display: flex;
-    gap: 15px;
-}
-
-.item-with-cols .prices .item-price {
-    width: 50px;
-    text-align: right;
 }
 
 /* --- RTL (Arabic) Support --- */
 body.rtl { direction: rtl; }
 body.rtl .lang-btn { right: auto; left: 20px; }
 
-
 /* ==============================================================================
-   MOBILE RESPONSIVE
+   MOBILE RESPONSIVE LAYOUT (Locked in 2 Columns)
 ============================================================================== */
 @media (max-width: 768px) {
-    .menu-row { gap: 15px; margin-bottom: 40px; }
-    .column { gap: 20px; }
-    .menu-page { padding: 50px 10px 30px 10px; }
+    .menu-layout {
+        gap: 15px; /* Tighter gap for mobile */
+    }
 
-    .main-logo { max-width: 150px; }
+    .menu-page {
+        padding: 60px 10px 30px 10px;
+    }
 
-    .main-category-title { font-size: 1.1rem; margin-bottom: 12px; }
-    .sub-category-title { font-size: 0.8rem; margin-top: 15px; margin-bottom: 8px; }
-    .item-name, .col-header-row { font-size: 0.75rem; }
-    .item-price { font-size: 0.75rem; }
-    .delivery-banner { font-size: 0.7rem; padding: 6px 10px; }
+    .main-logo {
+        max-width: 140px;
+        margin-bottom: 25px;
+    }
 
-    .menu-item, .item-with-cols { margin-bottom: 8px; }
-    .item-dots { margin: 0 4px; border-bottom-width: 1px; top: -4px; min-width: 5px; }
+    /* Scales fonts down so the two columns fit beautifully without squishing */
+    .main-category-title { font-size: 1.2rem; margin-bottom: 8px; }
+    .sub-category-title { font-size: 0.85rem; margin-top: 10px; margin-bottom: 5px; }
+    .item-name, .item-price { font-size: 0.75rem; }
 
-    .col-header-row, .item-with-cols .prices { gap: 8px; }
-    .col-header-row span.price-col, .item-with-cols .prices .item-price { width: 35px; }
+    .category-block { margin-bottom: 20px; }
+    .menu-item { margin-bottom: 4px; }
+    .item-dots { margin: 0 4px; border-bottom-width: 1px; top: -4px; }
 
-    .lang-btn { top: 10px; right: 10px; font-size: 0.8rem; padding: 3px 12px; }
-    body.rtl .lang-btn { right: auto; left: 10px; }
+    .lang-btn {
+        top: 10px;
+        right: 10px;
+        font-size: 0.8rem;
+        padding: 3px 12px;
+    }
+
+    body.rtl .lang-btn {
+        right: auto;
+        left: 10px;
+    }
+
+    /* Mobile Graphics: Resized to fit perfectly on the edges of phone screens */
+    .img-tomato { width: 120px; top: 10px; left: -20px; }
+    .img-bbq { width: 160px; top: 10px; right: -30px; }
+    .img-cup { width: 110px; bottom: 10px; left: -10px; }
+    .img-garlic { width: 110px; bottom: 10px; right: -10px; }
 }
