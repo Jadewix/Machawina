@@ -67,41 +67,43 @@ body {
     position: absolute;
     pointer-events: none;
     z-index: -1;
-    opacity: 0.8; /* Adjust based on user preference */
-    filter: brightness(1.1); /* Subtle boost if needed */
+    opacity: 0.15; /* Subtle background presence */
 }
 
-/* Specific Positions based on Screenshots */
+/* Specific Positions - Peaking from Corners */
 .bg-decoration.tomato {
-    top: -50px;
-    right: -100px;
-    width: 450px;
-    transform: rotate(15deg);
+    top: -100px;
+    right: -140px;
+    width: 380px;
+    transform: rotate(20deg);
 }
 
 .bg-decoration.garlic {
-    top: 800px;
-    left: -120px;
-    width: 320px;
+    top: 700px;
+    left: -150px;
+    width: 280px;
+    transform: rotate(-15deg);
 }
 
 .bg-decoration.bbq-1 {
-    top: 850px;
-    right: -100px;
-    width: 350px;
+    top: 800px;
+    right: -120px;
+    width: 300px;
     transform: rotate(-10deg);
 }
 
 .bg-decoration.bbq-2 {
-    bottom: 250px;
-    left: -80px;
-    width: 350px;
+    bottom: 200px;
+    left: -120px;
+    width: 300px;
+    transform: rotate(10deg);
 }
 
 .bg-decoration.cup {
-    bottom: -60px;
-    right: -80px;
-    width: 400px;
+    bottom: -80px;
+    right: -120px;
+    width: 380px;
+    transform: rotate(-10deg);
 }
 
 /* Menu Row Blocks */
