@@ -70,9 +70,38 @@
     </div>
 </div>
 
+<div id="category-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div class="modal-content">
+        <h2>Add Section</h2>
+        <label>Title (English)</label>
+        <input type="text" id="input-cat-en">
+        <label>Title (Arabic)</label>
+        <input type="text" id="input-cat-ar" dir="rtl">
+        <div class="modal-buttons">
+            <button class="btn btn-save" onclick="applyLocalCategory()">Add Section</button>
+            <button class="btn btn-cancel" onclick="closeCategoryModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div id="subcategory-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+    <div class="modal-content">
+        <h2>Add Subsection</h2>
+        <label>Title (English)</label>
+        <input type="text" id="input-sub-en">
+        <label>Title (Arabic)</label>
+        <input type="text" id="input-sub-ar" dir="rtl">
+        <div class="modal-buttons">
+            <button class="btn btn-save" onclick="applyLocalSubcategory()">Add Subsection</button>
+            <button class="btn btn-cancel" onclick="closeSubcategoryModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
 <script>
     let menuData = [];
     let currentEditTarget = null;
+    let currentSubcategoryTarget = null;
 
     // FETCH FROM DATABASE API
     function loadDatabaseData() {
@@ -124,7 +153,23 @@
                     if (block.type === 'category') {
                         const catBox = document.createElement('div');
                         catBox.className = 'category-box';
-                        catBox.innerHTML = `<div class="category-title">${block.title_en} (${block.title_ar})</div>`;
+
+                        const titleDiv = document.createElement('div');
+                        titleDiv.className = 'category-title';
+                        titleDiv.style.display = 'flex';
+                        titleDiv.style.justifyContent = 'space-between';
+
+                        const textSpan = document.createElement('span');
+                        textSpan.innerText = `${block.title_en} (${block.title_ar})`;
+                        titleDiv.appendChild(textSpan);
+
+                        const addSubBtn = document.createElement('button');
+                        addSubBtn.className = 'btn btn-edit';
+                        addSubBtn.innerText = '+ Add Subsection';
+                        addSubBtn.onclick = () => openAddSubcategoryModal(rowIndex, colSide, blockIndex);
+                        titleDiv.appendChild(addSubBtn);
+
+                        catBox.appendChild(titleDiv);
 
                         if (block.subcategories) {
                             block.subcategories.forEach((sub, subIndex) => {
@@ -155,6 +200,15 @@
                 });
             });
         });
+        
+        const addSectionBtn = document.createElement('button');
+        addSectionBtn.className = 'btn btn-add';
+        addSectionBtn.style.width = '100%';
+        addSectionBtn.style.padding = '15px';
+        addSectionBtn.style.fontSize = '1.1rem';
+        addSectionBtn.innerText = '+ Add New Section';
+        addSectionBtn.onclick = openAddCategoryModal;
+        container.appendChild(addSectionBtn);
     }
 
     function renderItemsList(items, parentDiv, rIdx, colSide, bIdx, sIdx, showCols) {
@@ -264,6 +318,71 @@
             document.getElementById('status-msg').innerText = "⚠️ Item deleted! Click 'Save' to send to Database.";
             document.getElementById('status-msg').style.color = "#FF8C00";
         }
+    }
+
+    function openAddCategoryModal() {
+        document.getElementById('input-cat-en').value = '';
+        document.getElementById('input-cat-ar').value = '';
+        document.getElementById('category-modal').style.display = 'flex';
+    }
+
+    function closeCategoryModal() {
+        document.getElementById('category-modal').style.display = 'none';
+    }
+
+    function applyLocalCategory() {
+        const newCat = {
+            type: 'category',
+            id: 'cat_' + Date.now().toString(36),
+            title_en: document.getElementById('input-cat-en').value,
+            title_ar: document.getElementById('input-cat-ar').value,
+            items: []
+        };
+        menuData.push({ left: [newCat], right: [] });
+        closeCategoryModal();
+        renderAdmin();
+        document.getElementById('status-msg').innerText = "⚠️ You have unsaved changes! Click 'Save' to send to Database.";
+        document.getElementById('status-msg').style.color = "#FF8C00";
+    }
+
+    function openAddSubcategoryModal(rIdx, colSide, bIdx) {
+        document.getElementById('input-sub-en').value = '';
+        document.getElementById('input-sub-ar').value = '';
+        currentSubcategoryTarget = { rIdx, colSide, bIdx };
+        document.getElementById('subcategory-modal').style.display = 'flex';
+    }
+
+    function closeSubcategoryModal() {
+        document.getElementById('subcategory-modal').style.display = 'none';
+        currentSubcategoryTarget = null;
+    }
+
+    function applyLocalSubcategory() {
+        const { rIdx, colSide, bIdx } = currentSubcategoryTarget;
+        const block = menuData[rIdx][colSide][bIdx];
+        
+        if (!block.subcategories) {
+            block.subcategories = [];
+            if (block.items && block.items.length > 0) {
+                block.subcategories.push({
+                    title_en: "Original Items",
+                    title_ar: "العناصر الأصلية",
+                    items: block.items
+                });
+            }
+            delete block.items;
+        }
+
+        block.subcategories.push({
+            title_en: document.getElementById('input-sub-en').value,
+            title_ar: document.getElementById('input-sub-ar').value,
+            items: []
+        });
+
+        closeSubcategoryModal();
+        renderAdmin();
+        document.getElementById('status-msg').innerText = "⚠️ You have unsaved changes! Click 'Save' to send to Database.";
+        document.getElementById('status-msg').style.color = "#FF8C00";
     }
 
     // Start App
