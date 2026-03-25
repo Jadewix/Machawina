@@ -70,16 +70,75 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
+// --- SESSION / AUTH SETUP ---
+const session = require('express-session');
+
+const ADMIN_USERNAME = 'admin';
+const ADMIN_PASSWORD = 'machawina2026';
+const SESSION_SECRET = process.env.SESSION_SECRET || 'machawina-super-secret-2026';
+
+app.use(session({
+    secret: SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        httpOnly: true,           // Prevent JS access to cookies
+        maxAge: 8 * 60 * 60 * 1000  // Session lasts 8 hours
+    }
+}));
+
+// Middleware: protect routes that require login
+function withAuth(req, res, next) {
+    if (req.session && req.session.isAdmin) {
+        return next();
+    }
+    // For API calls, return 401. For page requests, redirect to login.
+    if (req.accepts('html')) {
+        res.redirect('/login.html');
+    } else {
+        res.status(401).json({ error: 'Unauthorized' });
+    }
+}
+
+// --- AUTH ROUTES ---
+
+// Login
+app.post('/api/login', (req, res) => {
+    const { username, password } = req.body;
+    if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+        req.session.isAdmin = true;
+        res.json({ success: true });
+    } else {
+        res.status(401).json({ success: false, error: 'Invalid credentials' });
+    }
+});
+
+// Logout
+app.get('/api/logout', (req, res) => {
+    req.session.destroy(() => {
+        res.redirect('/login.html');
+    });
+});
+
+// Check auth status (used by admin.html on load)
+app.get('/api/check-auth', (req, res) => {
+    res.json({ authenticated: !!(req.session && req.session.isAdmin) });
+});
+
+// Protect the admin page itself
+app.get('/admin.html', withAuth, (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 // --- THE API BRIDGES ---
 
-// Bridge 1: The website asks for the menu
+// Bridge 1: The website asks for the menu (public - menu is public data)
 app.get('/api/menu', (req, res) => {
     db.get("SELECT data FROM menu WHERE id = 1", (err, row) => {
         if (err) {
             console.error("Database read error:", err);
             res.status(500).json({ error: "Database error" });
         } else if (!row) {
-            // If it's somehow still empty, send an empty array instead of crashing
             res.json([]);
         } else {
             res.json(JSON.parse(row.data));
@@ -87,11 +146,9 @@ app.get('/api/menu', (req, res) => {
     });
 });
 
-// Bridge 2: The admin panel sends new edits to save
-app.post('/api/menu', (req, res) => {
+// Bridge 2: The admin panel sends new edits to save (PROTECTED)
+app.post('/api/menu', withAuth, (req, res) => {
     const updatedMenuString = JSON.stringify(req.body);
-
-    // 'INSERT OR REPLACE' guarantees saving works even if row 1 was accidentally deleted
     db.run("INSERT OR REPLACE INTO menu (id, data) VALUES (1, ?)", [updatedMenuString], function(err) {
         if (err) {
             console.error("Save error:", err);
@@ -102,26 +159,21 @@ app.post('/api/menu', (req, res) => {
     });
 });
 
-// Bridge 3: FORCE SYNC - Overwrites the database with menu.json
-app.get('/api/sync', (req, res) => {
+// Bridge 3: FORCE SYNC - Overwrites the database with menu.json (PROTECTED)
+app.get('/api/sync', withAuth, (req, res) => {
     const jsonPath = path.join(__dirname, 'menu.json');
-
-    // Check if your menu.json file exists on the server
     if (fs.existsSync(jsonPath)) {
-        // Read your actual, full menu file
         const fileData = fs.readFileSync(jsonPath, 'utf8');
-
-        // Force the database to overwrite everything with your file's data
         db.run("INSERT OR REPLACE INTO menu (id, data) VALUES (1, ?)", [fileData], function(err) {
             if (err) {
                 console.error(err);
                 res.status(500).send("❌ Failed to sync database.");
             } else {
-                res.send("✅ SUCCESS! Your menu.json has been copied into the live database. You can refresh your website now!");
+                res.send("✅ SUCCESS! Your menu.json has been copied into the live database.");
             }
         });
     } else {
-        res.status(404).send("❌ Could not find menu.json. Make sure you uploaded it to Azure!");
+        res.status(404).send("❌ Could not find menu.json.");
     }
 });
 

@@ -38,6 +38,7 @@
 <div class="controls">
     <button class="btn btn-sync" onclick="saveToDatabase()">💾 Save Changes to Database</button>
     <span class="status-text" id="status-msg">Connected to live server. Make edits below!</span>
+    <a href="/api/logout" class="btn" style="background:#dc3545; color:white; text-decoration:none; margin-left:auto;">🔒 Logout</a>
 </div>
 
 <div id="admin-container">Loading data from database...</div>
@@ -385,8 +386,17 @@
         document.getElementById('status-msg').style.color = "#FF8C00";
     }
 
-    // Start App
-    loadDatabaseData();
+    // Auth check: redirect to login if not authenticated
+    fetch('/api/check-auth')
+        .then(r => r.json())
+        .then(data => {
+            if (!data.authenticated) {
+                window.location.href = '/login.html';
+            } else {
+                loadDatabaseData();
+            }
+        })
+        .catch(() => { window.location.href = '/login.html'; });
 
 </script>
 </body>
