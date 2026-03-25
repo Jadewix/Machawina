@@ -93,7 +93,7 @@
         statusMsg.innerText = "Saving to database...";
         statusMsg.style.color = "#666";
 
-        fetch('http://localhost:3000/api/menu', {
+        fetch('/api/menu', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(menuData)
