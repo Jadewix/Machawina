@@ -91,7 +91,28 @@ app.post('/api/menu', (req, res) => {
         }
     });
 });
+// Bridge 3: FORCE SYNC - Overwrites the database with menu.json
+app.get('/api/sync', (req, res) => {
+    const jsonPath = path.join(__dirname, 'menu.json');
 
+    // Check if your menu.json file exists on the server
+    if (fs.existsSync(jsonPath)) {
+        // Read your actual, full menu file
+        const fileData = fs.readFileSync(jsonPath, 'utf8');
+
+        // Force the database to overwrite everything with your file's data
+        db.run("INSERT OR REPLACE INTO menu (id, data) VALUES (1, ?)", [fileData], function(err) {
+            if (err) {
+                console.error(err);
+                res.status(500).send("❌ Failed to sync database.");
+            } else {
+                res.send("✅ SUCCESS! Your menu.json has been copied into the live database. You can refresh your website now!");
+            }
+        });
+    } else {
+        res.status(404).send("❌ Could not find menu.json. Make sure you uploaded it to Azure!");
+    }
+});
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
