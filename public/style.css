@@ -13,23 +13,15 @@
     box-sizing: border-box;
 }
 
-/* --- THE IOS FIX: Lock the HTML and Body containers --- */
-html,
-body {
-    overflow-x: hidden;
-    width: 100%;
-    position: relative;
-}
-
 body {
     font-family: var(--font-item);
     color: var(--navy);
     background-color: var(--bg-color);
+    position: relative;
+    overflow-x: hidden;
     min-height: 100vh;
-    touch-action: pan-y;
-    /* Force vertical scroll only, disable pinch zoom */
-    -webkit-text-size-adjust: 100%;
-    /* Stop iOS text auto-zoom */
+    touch-action: pan-x pan-y;
+    /* Allow scrolling, prevent zoom */
 }
 
 /* --- Language Button --- */
@@ -274,7 +266,7 @@ body.rtl .delivery-banner {
 
 /* ==============================================================================
    MOBILE RESPONSIVE
-============================================================================== */
+ ============================================================================== */
 @media (max-width: 768px) {
     .menu-row {
         gap: 15px;
