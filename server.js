@@ -35,11 +35,21 @@ const db = new sqlite3.Database(dbPath, (err) => {
             // MIGRATION TRICK: Prevent empty database crashes!
             db.get("SELECT * FROM menu WHERE id = 1", (err, row) => {
                 if (!row) {
-                    // Safe skeleton data so the frontend has something to load
+                    // Safe skeleton data so the frontend has something to load without crashing!
                     let initialData = JSON.stringify([
                         {
-                            category: "Starters",
-                            items: [{ name: "Test Item", price: "10", description: "Delete me in Admin" }]
+                            "left": [
+                                {
+                                    "type": "category",
+                                    "id": "starters",
+                                    "title_en": "Starters",
+                                    "title_ar": "مقبلات",
+                                    "items": [
+                                        { "name_en": "Test Item", "name_ar": "عنصر اختبار", "price": "10.0" }
+                                    ]
+                                }
+                            ],
+                            "right": []
                         }
                     ]);
 
@@ -91,6 +101,7 @@ app.post('/api/menu', (req, res) => {
         }
     });
 });
+
 // Bridge 3: FORCE SYNC - Overwrites the database with menu.json
 app.get('/api/sync', (req, res) => {
     const jsonPath = path.join(__dirname, 'menu.json');
@@ -113,6 +124,7 @@ app.get('/api/sync', (req, res) => {
         res.status(404).send("❌ Could not find menu.json. Make sure you uploaded it to Azure!");
     }
 });
+
 app.listen(PORT, () => {
     console.log(`🚀 Server is running on port ${PORT}`);
 });
