@@ -13,11 +13,10 @@
     box-sizing: border-box;
 }
 
-/* --- THE SAFE IOS FIX --- */
-html,
-body {
-    max-width: 100vw;
-    overflow-x: hidden;
+/* --- THE INSTANT SCROLL FIX --- */
+html {
+    /* Leave HTML completely free of overflow rules to stop the "double swipe" */
+    background-color: var(--bg-color);
 }
 
 body {
@@ -25,11 +24,11 @@ body {
     color: var(--navy);
     background-color: var(--bg-color);
     position: relative;
-    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+    /* Hide the background images that bleed off the edges here */
     -webkit-text-size-adjust: 100%;
     /* Stop iOS text auto-zoom */
-    -webkit-overflow-scrolling: touch;
-    /* Forces iOS smooth momentum scrolling */
 }
 
 /* --- Language Button --- */
