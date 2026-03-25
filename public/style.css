@@ -59,6 +59,49 @@ body {
     padding: 60px 30px;
     position: relative;
     z-index: 1;
+    overflow: visible; /* Ensure decorations are visible if they bleed out */
+}
+
+/* --- Background Decorations --- */
+.bg-decoration {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+    opacity: 0.8; /* Adjust based on user preference */
+    filter: brightness(1.1); /* Subtle boost if needed */
+}
+
+/* Specific Positions based on Screenshots */
+.bg-decoration.tomato {
+    top: -50px;
+    right: -100px;
+    width: 450px;
+    transform: rotate(15deg);
+}
+
+.bg-decoration.garlic {
+    top: 800px;
+    left: -120px;
+    width: 320px;
+}
+
+.bg-decoration.bbq-1 {
+    top: 850px;
+    right: -100px;
+    width: 350px;
+    transform: rotate(-10deg);
+}
+
+.bg-decoration.bbq-2 {
+    bottom: 250px;
+    left: -80px;
+    width: 350px;
+}
+
+.bg-decoration.cup {
+    bottom: -60px;
+    right: -80px;
+    width: 400px;
 }
 
 /* Menu Row Blocks */
