@@ -65,12 +65,14 @@ app.get('/api/menu', (req, res) => {
 });
 
 // Bridge 2: The admin panel sends new edits to save
+// Bridge 2: The admin panel sends new edits to save
 app.post('/api/menu', (req, res) => {
     const updatedMenuString = JSON.stringify(req.body);
 
-    db.run("UPDATE menu SET data = ? WHERE id = 1", [updatedMenuString], function(err) {
+    // 'INSERT OR REPLACE' guarantees that even if the database is 100% blank, saving will work!
+    db.run("INSERT OR REPLACE INTO menu (id, data) VALUES (1, ?)", [updatedMenuString], function(err) {
         if (err) {
-            console.error(err);
+            console.error("Save error:", err);
             res.status(500).json({ error: "Failed to save to database" });
         } else {
             res.json({ success: true, message: "Menu successfully updated in SQLite!" });
