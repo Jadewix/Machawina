@@ -7,7 +7,7 @@ const arOption = document.getElementById('lang-ar');
 const enOption = document.getElementById('lang-en');
 
 // 1. Fetch from Database
-fetch('http://localhost:3000/api/menu')
+fetch('/api/menu')
     .then(response => {
         if (!response.ok) throw new Error('Network response was not ok');
         return response.json();
