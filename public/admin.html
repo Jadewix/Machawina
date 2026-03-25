@@ -128,7 +128,10 @@
 
                         if (block.subcategories) {
                             block.subcategories.forEach((sub, subIndex) => {
-                                catBox.innerHTML += `<h4>- ${sub.title_en} -</h4>`;
+                                const subTitle = document.createElement('h4');
+                                subTitle.innerText = `- ${sub.title_en} -`;
+                                catBox.appendChild(subTitle);
+
                                 renderItemsList(sub.items, catBox, rowIndex, colSide, blockIndex, subIndex, block.showCols);
 
                                 const addBtn = document.createElement('button');
