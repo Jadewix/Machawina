@@ -1,51 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no">
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no">
     <title>Machawina Menu</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;700;800&family=Bungee&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;700;800&family=Bungee&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="rtl">
-<div class="lang-toggle-container" id="lang-toggle">
-    <div class="lang-option" id="lang-en">EN</div>
-    <div class="lang-option active" id="lang-ar">عربي</div>
-</div>
+    <div class="lang-toggle-container" id="lang-toggle">
+        <div class="lang-option" id="lang-en">EN</div>
+        <div class="lang-option active" id="lang-ar">عربي</div>
+    </div>
 
-<div class="menu-page">
-    <!-- Background Decorations -->
-    <img src="img/Tomato.png" class="bg-decoration tomato" alt="">
-    <img src="img/Garlic.png" class="bg-decoration garlic" alt="">
-    <img src="img/BBQ.png" class="bg-decoration bbq-1" alt="">
-    <img src="img/BBQ.png" class="bg-decoration bbq-2" alt="">
-    <img src="img/Cup.png" class="bg-decoration cup" alt="">
+    <div class="menu-page">
+        <!-- Background Decorations -->
+        <img src="img/Tomato.png" class="bg-decoration tomato" alt="">
+        <img src="img/Cup.png" class="bg-decoration cup" alt="">
 
-    <div id="menu-container"></div>
-</div>
+        <div id="menu-container"></div>
+    </div>
 
-<script>
-    // Prevent multi-touch zoom
-    document.addEventListener('touchstart', function(event) {
-        if (event.touches.length > 1) {
-            event.preventDefault();
-        }
-    }, { passive: false });
+    <script>
+        // Prevent multi-touch zoom
+        document.addEventListener('touchstart', function (event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
 
-    // Prevent double-tap zoom
-    let lastTouchEnd = 0;
-    document.addEventListener('touchend', function(event) {
-        const now = (new Date()).getTime();
-        if (now - lastTouchEnd <= 300) {
-            event.preventDefault();
-        }
-        lastTouchEnd = now;
-    }, false);
-</script>
-<script src="script.js"></script>
+        // Prevent double-tap zoom
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+    </script>
+    <script src="script.js"></script>
 </body>
+
 </html>
