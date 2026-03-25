@@ -13,19 +13,12 @@
     box-sizing: border-box;
 }
 
-html, body {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
-    position: relative;
-}
-
 body {
     font-family: var(--font-item);
     color: var(--navy);
     background-color: var(--bg-color);
+    position: relative;
+    overflow-x: hidden;
     min-height: 100vh;
     touch-action: pan-x pan-y; /* Allow scrolling, prevent zoom */
 }
@@ -67,7 +60,7 @@ body {
     padding: 60px 30px;
     position: relative;
     z-index: 1;
-    overflow-x: hidden; /* Prevent decorations from creating horizontal scroll on mobile */
+    overflow: visible; /* Ensure decorations are visible if they bleed out */
 }
 
 /* --- Background Decorations --- */
@@ -204,7 +197,6 @@ body {
     font-weight: 700;
     white-space: normal;
     flex-shrink: 1;
-    min-width: 0; /* Ensures proper wrapping within flexbox */
     line-height: 1.1;
 }
 
