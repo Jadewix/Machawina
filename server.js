@@ -9,6 +9,7 @@ const app = express();
 // 1. CLOUD FIX: Azure uses dynamic ports
 const PORT = process.env.PORT || 3000;
 
+app.set('trust proxy', 1); // Required for sessions to work behind Azure IIS proxy
 app.use(cors());
 app.use(express.json({ limit: '5mb' }));
 
@@ -82,7 +83,8 @@ app.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        httpOnly: true,           // Prevent JS access to cookies
+        httpOnly: true,
+        secure: 'auto', // 'auto' sends secure cookie on HTTPS, non-secure on HTTP
         maxAge: 8 * 60 * 60 * 1000  // Session lasts 8 hours
     }
 }));
@@ -123,11 +125,6 @@ app.get('/api/logout', (req, res) => {
 // Check auth status (used by admin.html on load)
 app.get('/api/check-auth', (req, res) => {
     res.json({ authenticated: !!(req.session && req.session.isAdmin) });
-});
-
-// Protect the admin page itself
-app.get('/admin.html', withAuth, (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
 
 // --- THE API BRIDGES ---
