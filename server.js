@@ -1,33 +1,46 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const cors = require('cors');
-const fs = require('fs'); // Lets the server read files
+const fs = require('fs');
+const path = require('path'); // Required for Azure folder paths
 
 const app = express();
-const PORT = 3000;
+
+// 1. CLOUD FIX: Azure uses dynamic ports
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json({ limit: '5mb' })); // Allows large menu data
+app.use(express.json({ limit: '5mb' }));
+
+// 2. CLOUD FIX: Serve your frontend files to the internet
+app.use(express.static('public'));
+
+// 3. CLOUD FIX: Persistent database path so Azure doesn't delete your menu
+const dbPath = process.env.HOME
+    ? path.join(process.env.HOME, 'database.sqlite')
+    : path.join(__dirname, 'database.sqlite');
 
 // Connect to SQLite Database
-const db = new sqlite3.Database('./database.sqlite', (err) => {
+const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
         console.error('Error opening database:', err.message);
     } else {
-        console.log('✅ Connected to SQLite database.');
+        console.log(`✅ Connected to SQLite database at: ${dbPath}`);
 
         // Create a table to hold the menu document
         db.run(`CREATE TABLE IF NOT EXISTS menu (
             id INTEGER PRIMARY KEY,
             data TEXT
         )`, () => {
-            // MIGRATION TRICK: If the database is empty, copy data from menu.json!
+            // MIGRATION TRICK: If the database is empty, copy data from menu.json
             db.get("SELECT * FROM menu WHERE id = 1", (err, row) => {
                 if (!row) {
                     let initialData = '[]';
-                    if (fs.existsSync('./menu.json')) {
+                    // Look in the current folder for menu.json
+                    const jsonPath = path.join(__dirname, 'menu.json');
+                    if (fs.existsSync(jsonPath)) {
                         console.log("📦 Found menu.json! Migrating data to SQLite...");
-                        initialData = fs.readFileSync('./menu.json', 'utf8');
+                        initialData = fs.readFileSync(jsonPath, 'utf8');
                     }
                     db.run("INSERT INTO menu (id, data) VALUES (1, ?)", [initialData], (err) => {
                         if (!err) console.log("✅ Data successfully migrated to database!");
@@ -66,5 +79,5 @@ app.post('/api/menu', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on http://localhost:${PORT}`);
+    console.log(`🚀 Server is running on port ${PORT}`);
 });

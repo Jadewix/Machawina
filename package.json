@@ -4,7 +4,8 @@
   "description": "Machawina Restaurant Menu",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo \"No build step needed\""
   },
   "engines": {
     "node": "20.x"
