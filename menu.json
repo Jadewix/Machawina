@@ -68,6 +68,18 @@
     ],
     "right": [
       {
+        "type": "category", "id": "side_dishes", "title_en": "Side Dishes", "title_ar": "أطباق جانبية",
+        "items": [
+          { "name_en": "Eres Kebbeh", "name_ar": "قرص دهن", "price": "5.0" },
+          { "name_en": "Tabbouleh", "name_ar": "تبولة", "price": "7.0" },
+          { "name_en": "Castaletta", "name_ar": "کاستالیتا", "price": "18.0" }
+        ]
+      }
+    ]
+  },
+  {
+    "left": [
+      {
         "type": "category", "id": "alcocolic_drinks", "title_en": "Alcoholic Drinks", "title_ar": "مشروبات روحية",
         "showCols": "GLS/BTL",
         "items": [
@@ -76,18 +88,6 @@
           { "name_en": "Gin", "name_ar": "جين", "price": { "gls": "6", "btl": "60" } },
           { "name_en": "Wine", "name_ar": "نبيذ", "price": { "gls": "X", "btl": "15" } },
           { "name_en": "Arak", "name_ar": "عرق", "price": { "gls": "X", "btl": "15" } }
-        ]
-      }
-    ]
-  },
-  {
-    "left": [
-      {
-        "type": "category", "id": "side_dishes", "title_en": "Side Dishes", "title_ar": "أطباق جانبية",
-        "items": [
-          { "name_en": "Eres Kebbeh", "name_ar": "قرص دهن", "price": "5.0" },
-          { "name_en": "Tabbouleh", "name_ar": "تبولة", "price": "7.0" },
-          { "name_en": "Castaletta", "name_ar": "کاستالیتا", "price": "18.0" }
         ]
       }
     ],
