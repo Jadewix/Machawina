@@ -69,16 +69,19 @@ The backend server handles:
 
 ## Database
 
-* JSON (File-based storage)
+* SQLite
+* JSON (fallback / legacy support)
 
-A lightweight JSON file is used to store:
+The system uses **SQLite** as a lightweight database to store:
 
 * Menu items
 * Sections and subsections
 * Ingredients
 * Pricing information
 
-This approach keeps the project simple and easy to deploy while remaining flexible for future upgrades.
+SQLite provides a more structured and scalable approach compared to plain JSON while still remaining simple and easy to deploy.
+
+A JSON file (`menu.json`) may still be used for initial data seeding or fallback purposes.
 
 ---
 
@@ -107,7 +110,8 @@ machawina
 │       └── menuController.js
 │
 ├── data
-│   └── menu.json         # Menu data storage
+│   ├── menu.json         # Initial / fallback data
+│   └── database.sqlite   # SQLite database file
 │
 ├── package.json
 └── .gitignore
@@ -142,6 +146,10 @@ npm install
 
 ```
 
+---
+
+# Running the Application
+
 Start the server:
 
 ```
@@ -157,10 +165,6 @@ or if a start script exists:
 npm start
 
 ```
-
----
-
-# Running the Application
 
 Once the server is running, open your browser and navigate to:
 
@@ -194,22 +198,38 @@ The application is deployed on Azure and accessible at:
 
 # Data Management
 
-Menu data is managed through a JSON file:
+Menu data is primarily managed through the SQLite database:
 
 ```
 
-data/menu.json
+data/database.sqlite
 
 ```
 
-The admin panel updates this file dynamically through the backend, allowing real-time changes without modifying code.
+The admin panel interacts with the backend to perform real-time CRUD operations on the database.
+
+A JSON file is also included:
+
+```
+
+menu.json
+
+```
+
+This can be used for:
+
+* Initial data seeding
+* Backup purposes
+* Development/testing
+
+---
 
 # Future Improvements
 
 Possible improvements for the system include:
 
 * Authentication system for admin panel
-* Database integration (MongoDB / PostgreSQL)
+* Advanced role-based access control
 * Order system with cart and checkout
 * WhatsApp ordering integration
 * Multi-language support (English / Arabic)
@@ -227,4 +247,3 @@ Students focused on building modern web applications and real-world digital solu
 GitHub:
 https://github.com/Jadewix
 https://github.com/antoine-douaihy
-
