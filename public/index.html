@@ -49,6 +49,20 @@
         }, false);
     </script>
     <script src="script.js"></script>
+    <script>
+        /* THE ULTIMATE IOS PINCH-TO-ZOOM KILLER */
+        // Stops the native iOS zoom gesture
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        // Stops multi-touch (pinching with two fingers)
+        document.addEventListener('touchstart', function (e) {
+            if (e.touches.length > 1) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+    </script>
 </body>
 
 </html>
