@@ -181,6 +181,7 @@
 
     <div class="controls">
         <button class="btn btn-sync" onclick="saveToDatabase()">💾 Save Changes to Database</button>
+        <button class="btn btn-edit" style="background:#0A1128; color:white; padding:10px 20px;" onclick="syncFromJson()">🔄 Sync from menu.json</button>
         <span class="status-text" id="status-msg">Connected to live server. Make edits below!</span>
     </div>
 
@@ -249,6 +250,7 @@
         let currentEditTarget = null;
         let currentSubcategoryTarget = null;
 
+
         // FETCH FROM DATABASE API
         function loadDatabaseData() {
             fetch('/api/menu')
@@ -261,6 +263,26 @@
                     document.getElementById('admin-container').innerHTML = `<h3 style="color:red;">Error: Is your Node.js server running?</h3>`;
                 });
         }
+
+        // SYNC FROM JSON FILE
+        function syncFromJson() {
+            const statusMsg = document.getElementById('status-msg');
+            statusMsg.innerText = "Syncing from menu.json...";
+            statusMsg.style.color = "#666";
+
+            fetch('/api/sync')
+                .then(response => response.text())
+                .then(msg => {
+                    statusMsg.innerText = msg;
+                    statusMsg.style.color = "#28a745";
+                    loadDatabaseData(); // Reload to show new data
+                })
+                .catch(err => {
+                    statusMsg.innerText = "❌ Sync Failed! Server Error.";
+                    statusMsg.style.color = "red";
+                });
+        }
+
 
         // SAVE TO DATABASE API
         function saveToDatabase() {
