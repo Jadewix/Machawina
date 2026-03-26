@@ -74,6 +74,15 @@
           { "name_en": "Tabbouleh", "name_ar": "تبولة", "price": "7.0" },
           { "name_en": "Castaletta", "name_ar": "کاستالیتا", "price": "18.0" }
         ]
+      },
+      {
+        "type": "category", "id": "hot_beverages", "title_en": "Hot Beverages", "title_ar": "مشروبات ساخنة",
+        "items": [
+          { "name_en": "Nescafe", "name_ar": "نيسكافيه", "price": "2.0" },
+          { "name_en": "Coffee", "name_ar": "قهوة", "price": "1.0" },
+          { "name_en": "Tea", "name_ar": "شاي", "price": "2.0" },
+          { "name_en": "Hot Chocolate", "name_ar": "شكولاته ساخنة", "price": "2.0" }
+        ]
       }
     ]
   },
@@ -93,19 +102,6 @@
     ],
     "right": [
       {
-        "type": "category", "id": "hot_beverages", "title_en": "Hot Beverages", "title_ar": "مشروبات ساخنة",
-        "items": [
-          { "name_en": "Nescafe", "name_ar": "نيسكافيه", "price": "2.0" },
-          { "name_en": "Coffee", "name_ar": "قهوة", "price": "1.0" },
-          { "name_en": "Tea", "name_ar": "شاي", "price": "2.0" },
-          { "name_en": "Hot Chocolate", "name_ar": "شكولاته ساخنة", "price": "2.0" }
-        ]
-      }
-    ]
-  },
-  {
-    "left": [
-      {
         "type": "category", "id": "cold_beverages", "title_en": "Cold Beverages", "title_ar": "مشروبات باردة",
         "items": [
           { "name_en": "Beer", "name_ar": "بيرة", "price": "3.0" },
@@ -114,14 +110,17 @@
           { "name_en": "Sparkling Water", "name_ar": "بیریه", "price": "2.5" }
         ]
       }
-    ],
-    "right": [
+    ]
+  },
+  {
+    "left": [
       {
         "type": "category", "id": "shisha", "title_en": "Shisha", "title_ar": "أركيلة",
         "items": [
           { "name_en": "Shisha", "name_ar": "أركيلة", "price": "6.0" }
         ]
       }
-    ]
+    ],
+    "right": []
   }
 ]
