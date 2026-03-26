@@ -109,18 +109,13 @@
           { "name_en": "Water", "name_ar": "ماء", "price": "0.5" },
           { "name_en": "Sparkling Water", "name_ar": "بیریه", "price": "2.5" }
         ]
-      }
-    ]
-  },
-  {
-    "left": [
+      },
       {
         "type": "category", "id": "shisha", "title_en": "Shisha", "title_ar": "أركيلة",
         "items": [
           { "name_en": "Shisha", "name_ar": "أركيلة", "price": "6.0" }
         ]
       }
-    ],
-    "right": []
+    ]
   }
 ]
