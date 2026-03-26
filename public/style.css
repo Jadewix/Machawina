@@ -307,9 +307,7 @@ body.rtl .delivery-banner {
         margin-bottom: 12px;
     }
 
-    .main-category-title {
-        font-size: 1.1rem;
-    }
+    .main-category-title { font-size: 1.1rem; min-height: 2.4rem; display: flex; align-items: flex-end; }
 
     .sub-category-title {
         font-size: 0.8rem;
