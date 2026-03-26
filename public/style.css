@@ -13,7 +13,7 @@
     box-sizing: border-box;
 }
 
-/* --- THE ULTIMATE IOS SCROLL FIX --- */
+/* --- THE ULTIMATE IOS SCROLL & ZOOM FIX --- */
 html {
     background-color: var(--bg-color);
     max-width: 100vw;
@@ -29,9 +29,11 @@ body {
     width: 100%;
     max-width: 100vw;
     overflow-x: clip;
-    /* The magic property: strictly cuts off bleeding elements without breaking vertical scroll */
+    /* Strictly cuts off bleeding elements without breaking vertical scroll */
     -webkit-text-size-adjust: 100%;
     /* Stop iOS text auto-zoom */
+    touch-action: manipulation;
+    /* Kills "double-tap to zoom" on iPhones */
 }
 
 /* --- Language Button --- */
@@ -49,6 +51,8 @@ body {
     font-weight: 700;
     z-index: 10;
     overflow: hidden;
+    touch-action: manipulation;
+    /* Extra protection for buttons */
 }
 
 .lang-option {
