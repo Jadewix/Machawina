@@ -1,394 +1,588 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Machawina Admin Panel</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f4f7f6; color: #333; padding: 20px; }
-        h1 { color: #0A1128; border-bottom: 3px solid #FF8C00; padding-bottom: 10px; margin-bottom: 20px; }
-        .category-box { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .category-title { font-size: 1.2rem; font-weight: bold; color: #FF8C00; margin-bottom: 10px; text-transform: uppercase; }
-        .item-row { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #eee; }
-        .item-row:hover { background: #f9f9f9; }
-        .btn { padding: 6px 12px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 5px; }
-        .btn-edit { background: #0A1128; color: white; }
-        .btn-delete { background: #dc3545; color: white; }
-        .btn-add { background: #28a745; color: white; margin-top: 10px; display: inline-block; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #0A1128;
+            border-bottom: 3px solid #FF8C00;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .category-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .category-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #FF8C00;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .subcategory-title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .subcategory-title-row h4 {
+            margin: 0;
+            color: #555;
+            font-size: 1.1rem;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-row:hover {
+            background: #f9f9f9;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+
+        .btn-edit {
+            background: #0A1128;
+            color: white;
+        }
+
+        .btn-delete {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-add {
+            background: #28a745;
+            color: white;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 5px;
+        }
 
         /* Top Control Bar */
-        .controls { background: white; padding: 15px; border-radius: 8px; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); display: flex; gap: 15px; align-items: center; }
-        .btn-sync { background: #FF8C00; color: white; padding: 10px 20px; font-size: 1.1rem; }
-        .btn-sync:hover { background: #e07b00; }
-        .status-text { font-size: 1rem; font-weight: bold; color: #666; }
+        .controls {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn-sync {
+            background: #FF8C00;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.1rem;
+        }
+
+        .btn-sync:hover {
+            background: #e07b00;
+        }
+
+        .status-text {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+        }
 
         /* Modal */
-        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;}
-        .modal-content { background: white; padding: 25px; border-radius: 8px; width: 90%; max-width: 400px; }
-        .modal-content input { width: 100%; padding: 8px; margin: 8px 0 15px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
-        .modal-buttons { display: flex; justify-content: space-between; }
-        .btn-save { background: #28a745; color: white; flex-grow: 1; margin-right: 10px; }
-        .btn-cancel { background: #6c757d; color: white; }
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        .modal-content input {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .btn-save {
+            background: #28a745;
+            color: white;
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+
+        .btn-cancel {
+            background: #6c757d;
+            color: white;
+        }
     </style>
 </head>
+
 <body>
 
-<h1>Machawina Admin Panel (Database Connected)</h1>
+    <h1>Machawina Admin Panel (Database Connected)</h1>
 
-<div class="controls">
-    <button class="btn btn-sync" onclick="saveToDatabase()">💾 Save Changes to Database</button>
-    <span class="status-text" id="status-msg">Connected to live server. Make edits below!</span>
-</div>
+    <div class="controls">
+        <button class="btn btn-sync" onclick="saveToDatabase()">💾 Save Changes to Database</button>
+        <span class="status-text" id="status-msg">Connected to live server. Make edits below!</span>
+    </div>
 
-<div id="admin-container">Loading data from database...</div>
+    <div id="admin-container">Loading data from database...</div>
 
-<div id="modal">
-    <div class="modal-content">
-        <h2 id="modal-title">Edit Item</h2>
-        <label>Name (English)</label>
-        <input type="text" id="input-name-en">
+    <div id="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Edit Item</h2>
+            <label>Name (English)</label>
+            <input type="text" id="input-name-en">
 
-        <label>Name (Arabic)</label>
-        <input type="text" id="input-name-ar" dir="rtl">
+            <label>Name (Arabic)</label>
+            <input type="text" id="input-name-ar" dir="rtl">
 
-        <div id="price-single-container">
-            <label>Price ($)</label>
-            <input type="text" id="input-price">
-        </div>
+            <div id="price-single-container">
+                <label>Price ($)</label>
+                <input type="text" id="input-price">
+            </div>
 
-        <div id="price-dual-container" style="display:none;">
-            <label>Price Glass (GLS)</label>
-            <input type="text" id="input-price-gls">
-            <label>Price Bottle (BTL)</label>
-            <input type="text" id="input-price-btl">
-        </div>
+            <div id="price-dual-container" style="display:none;">
+                <label>Price Glass (GLS)</label>
+                <input type="text" id="input-price-gls">
+                <label>Price Bottle (BTL)</label>
+                <input type="text" id="input-price-btl">
+            </div>
 
-        <div class="modal-buttons">
-            <button class="btn btn-save" onclick="applyLocalEdit()">Apply locally</button>
-            <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+            <div class="modal-buttons">
+                <button class="btn btn-save" onclick="applyLocalEdit()">Apply locally</button>
+                <button class="btn btn-cancel" onclick="closeModal()">Cancel</button>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="category-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
-    <div class="modal-content">
-        <h2>Add Section</h2>
-        <label>Title (English)</label>
-        <input type="text" id="input-cat-en">
-        <label>Title (Arabic)</label>
-        <input type="text" id="input-cat-ar" dir="rtl">
-        <div class="modal-buttons">
-            <button class="btn btn-save" onclick="applyLocalCategory()">Add Section</button>
-            <button class="btn btn-cancel" onclick="closeCategoryModal()">Cancel</button>
+    <div id="category-modal"
+        style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div class="modal-content">
+            <h2>Add Section</h2>
+            <label>Title (English)</label>
+            <input type="text" id="input-cat-en">
+            <label>Title (Arabic)</label>
+            <input type="text" id="input-cat-ar" dir="rtl">
+            <div class="modal-buttons">
+                <button class="btn btn-save" onclick="applyLocalCategory()">Add Section</button>
+                <button class="btn btn-cancel" onclick="closeCategoryModal()">Cancel</button>
+            </div>
         </div>
     </div>
-</div>
 
-<div id="subcategory-modal" style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
-    <div class="modal-content">
-        <h2>Add Subsection</h2>
-        <label>Title (English)</label>
-        <input type="text" id="input-sub-en">
-        <label>Title (Arabic)</label>
-        <input type="text" id="input-sub-ar" dir="rtl">
-        <div class="modal-buttons">
-            <button class="btn btn-save" onclick="applyLocalSubcategory()">Add Subsection</button>
-            <button class="btn btn-cancel" onclick="closeSubcategoryModal()">Cancel</button>
+    <div id="subcategory-modal"
+        style="display:none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; z-index: 1000;">
+        <div class="modal-content">
+            <h2>Add Subsection</h2>
+            <label>Title (English)</label>
+            <input type="text" id="input-sub-en">
+            <label>Title (Arabic)</label>
+            <input type="text" id="input-sub-ar" dir="rtl">
+            <div class="modal-buttons">
+                <button class="btn btn-save" onclick="applyLocalSubcategory()">Add Subsection</button>
+                <button class="btn btn-cancel" onclick="closeSubcategoryModal()">Cancel</button>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    let menuData = [];
-    let currentEditTarget = null;
-    let currentSubcategoryTarget = null;
+    <script>
+        let menuData = [];
+        let currentEditTarget = null;
+        let currentSubcategoryTarget = null;
 
-    // FETCH FROM DATABASE API
-    function loadDatabaseData() {
-        fetch('/api/menu')
-            .then(response => response.json())
-            .then(data => {
-                menuData = data;
-                renderAdmin();
+        // FETCH FROM DATABASE API
+        function loadDatabaseData() {
+            fetch('/api/menu')
+                .then(response => response.json())
+                .then(data => {
+                    menuData = data;
+                    renderAdmin();
+                })
+                .catch(err => {
+                    document.getElementById('admin-container').innerHTML = `<h3 style="color:red;">Error: Is your Node.js server running?</h3>`;
+                });
+        }
+
+        // SAVE TO DATABASE API
+        function saveToDatabase() {
+            const statusMsg = document.getElementById('status-msg');
+            statusMsg.innerText = "Saving to database...";
+            statusMsg.style.color = "#666";
+
+            fetch('/api/menu', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(menuData)
             })
-            .catch(err => {
-                document.getElementById('admin-container').innerHTML = `<h3 style="color:red;">Error: Is your Node.js server running?</h3>`;
-            });
-    }
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        statusMsg.innerText = "✅ Successfully saved to SQLite Database!";
+                        statusMsg.style.color = "#28a745";
+                        setTimeout(() => { statusMsg.innerText = "Connected to live server. Make edits below!"; statusMsg.style.color = "#666"; }, 3000);
+                    }
+                })
+                .catch(err => {
+                    statusMsg.innerText = "❌ Failed to save! Is the server running?";
+                    statusMsg.style.color = "red";
+                    console.error(err);
+                });
+        }
 
-    // SAVE TO DATABASE API
-    function saveToDatabase() {
-        const statusMsg = document.getElementById('status-msg');
-        statusMsg.innerText = "Saving to database...";
-        statusMsg.style.color = "#666";
+        // --- RENDER LOGIC ---
+        function renderAdmin() {
+            const container = document.getElementById('admin-container');
+            container.innerHTML = '';
 
-        fetch('/api/menu', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(menuData)
-        })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    statusMsg.innerText = "✅ Successfully saved to SQLite Database!";
-                    statusMsg.style.color = "#28a745";
-                    setTimeout(() => { statusMsg.innerText = "Connected to live server. Make edits below!"; statusMsg.style.color = "#666"; }, 3000);
-                }
-            })
-            .catch(err => {
-                statusMsg.innerText = "❌ Failed to save! Is the server running?";
-                statusMsg.style.color = "red";
-                console.error(err);
-            });
-    }
+            menuData.forEach((row, rowIndex) => {
+                ['left', 'right'].forEach(colSide => {
+                    row[colSide].forEach((block, blockIndex) => {
+                        if (block.type === 'category') {
+                            const catBox = document.createElement('div');
+                            catBox.className = 'category-box';
 
-    // --- RENDER LOGIC ---
-    function renderAdmin() {
-        const container = document.getElementById('admin-container');
-        container.innerHTML = '';
+                            const titleDiv = document.createElement('div');
+                            titleDiv.className = 'category-title';
 
-        menuData.forEach((row, rowIndex) => {
-            ['left', 'right'].forEach(colSide => {
-                row[colSide].forEach((block, blockIndex) => {
-                    if (block.type === 'category') {
-                        const catBox = document.createElement('div');
-                        catBox.className = 'category-box';
+                            const textSpan = document.createElement('span');
+                            textSpan.innerText = `${block.title_en} (${block.title_ar})`;
+                            titleDiv.appendChild(textSpan);
 
-                        const titleDiv = document.createElement('div');
-                        titleDiv.className = 'category-title';
-                        titleDiv.style.display = 'flex';
-                        titleDiv.style.justifyContent = 'space-between';
+                            // Buttons for the Section
+                            const btnGroup = document.createElement('div');
+                            btnGroup.className = 'btn-group';
 
-                        const textSpan = document.createElement('span');
-                        textSpan.innerText = `${block.title_en} (${block.title_ar})`;
-                        titleDiv.appendChild(textSpan);
+                            const addSubBtn = document.createElement('button');
+                            addSubBtn.className = 'btn btn-edit';
+                            addSubBtn.innerText = '+ Subsection';
+                            addSubBtn.onclick = () => openAddSubcategoryModal(rowIndex, colSide, blockIndex);
 
-                        const addSubBtn = document.createElement('button');
-                        addSubBtn.className = 'btn btn-edit';
-                        addSubBtn.innerText = '+ Add Subsection';
-                        addSubBtn.onclick = () => openAddSubcategoryModal(rowIndex, colSide, blockIndex);
-                        titleDiv.appendChild(addSubBtn);
+                            const delSectionBtn = document.createElement('button');
+                            delSectionBtn.className = 'btn btn-delete';
+                            delSectionBtn.innerText = 'Delete Section';
+                            delSectionBtn.onclick = () => deleteCategory(rowIndex, colSide, blockIndex);
 
-                        catBox.appendChild(titleDiv);
+                            btnGroup.appendChild(addSubBtn);
+                            btnGroup.appendChild(delSectionBtn);
+                            titleDiv.appendChild(btnGroup);
+                            catBox.appendChild(titleDiv);
 
-                        if (block.subcategories) {
-                            block.subcategories.forEach((sub, subIndex) => {
-                                const subTitle = document.createElement('h4');
-                                subTitle.innerText = `- ${sub.title_en} -`;
-                                catBox.appendChild(subTitle);
+                            if (block.subcategories && block.subcategories.length > 0) {
+                                block.subcategories.forEach((sub, subIndex) => {
+                                    const subRow = document.createElement('div');
+                                    subRow.className = 'subcategory-title-row';
 
-                                renderItemsList(sub.items, catBox, rowIndex, colSide, blockIndex, subIndex, block.showCols);
+                                    const subTitle = document.createElement('h4');
+                                    subTitle.innerText = `- ${sub.title_en} -`;
+
+                                    const delSubBtn = document.createElement('button');
+                                    delSubBtn.className = 'btn btn-delete';
+                                    delSubBtn.innerText = 'Delete Subsection';
+                                    delSubBtn.onclick = () => deleteSubcategory(rowIndex, colSide, blockIndex, subIndex);
+
+                                    subRow.appendChild(subTitle);
+                                    subRow.appendChild(delSubBtn);
+                                    catBox.appendChild(subRow);
+
+                                    renderItemsList(sub.items, catBox, rowIndex, colSide, blockIndex, subIndex, block.showCols);
+
+                                    const addBtn = document.createElement('button');
+                                    addBtn.className = 'btn btn-add';
+                                    addBtn.innerText = `+ Add to ${sub.title_en}`;
+                                    addBtn.onclick = () => openAddModal(rowIndex, colSide, blockIndex, subIndex, block.showCols);
+                                    catBox.appendChild(addBtn);
+                                });
+                            } else {
+                                // No subcategories, render normal items
+                                renderItemsList(block.items || [], catBox, rowIndex, colSide, blockIndex, null, block.showCols);
 
                                 const addBtn = document.createElement('button');
                                 addBtn.className = 'btn btn-add';
-                                addBtn.innerText = `+ Add to ${sub.title_en}`;
-                                addBtn.onclick = () => openAddModal(rowIndex, colSide, blockIndex, subIndex, block.showCols);
+                                addBtn.innerText = `+ Add Item`;
+                                addBtn.onclick = () => openAddModal(rowIndex, colSide, blockIndex, null, block.showCols);
                                 catBox.appendChild(addBtn);
-                            });
-                        } else {
-                            renderItemsList(block.items, catBox, rowIndex, colSide, blockIndex, null, block.showCols);
+                            }
 
-                            const addBtn = document.createElement('button');
-                            addBtn.className = 'btn btn-add';
-                            addBtn.innerText = `+ Add Item`;
-                            addBtn.onclick = () => openAddModal(rowIndex, colSide, blockIndex, null, block.showCols);
-                            catBox.appendChild(addBtn);
+                            container.appendChild(catBox);
                         }
-
-                        container.appendChild(catBox);
-                    }
+                    });
                 });
             });
-        });
-        
-        const addSectionBtn = document.createElement('button');
-        addSectionBtn.className = 'btn btn-add';
-        addSectionBtn.style.width = '100%';
-        addSectionBtn.style.padding = '15px';
-        addSectionBtn.style.fontSize = '1.1rem';
-        addSectionBtn.innerText = '+ Add New Section';
-        addSectionBtn.onclick = openAddCategoryModal;
-        container.appendChild(addSectionBtn);
-    }
 
-    function renderItemsList(items, parentDiv, rIdx, colSide, bIdx, sIdx, showCols) {
-        items.forEach((item, itemIndex) => {
-            const row = document.createElement('div');
-            row.className = 'item-row';
+            const addSectionBtn = document.createElement('button');
+            addSectionBtn.className = 'btn btn-add';
+            addSectionBtn.style.width = '100%';
+            addSectionBtn.style.padding = '15px';
+            addSectionBtn.style.fontSize = '1.1rem';
+            addSectionBtn.innerText = '+ Add New Section';
+            addSectionBtn.onclick = openAddCategoryModal;
+            container.appendChild(addSectionBtn);
+        }
 
-            let priceDisplay = typeof item.price === 'object'
-                ? `GLS: ${item.price.gls} | BTL: ${item.price.btl}`
-                : `$${item.price}`;
+        function renderItemsList(items, parentDiv, rIdx, colSide, bIdx, sIdx, showCols) {
+            items.forEach((item, itemIndex) => {
+                const row = document.createElement('div');
+                row.className = 'item-row';
 
-            row.innerHTML = `
+                let priceDisplay = typeof item.price === 'object'
+                    ? `GLS: ${item.price.gls} | BTL: ${item.price.btl}`
+                    : `$${item.price}`;
+
+                row.innerHTML = `
                     <div><strong>${item.name_en}</strong> / ${item.name_ar} - ${priceDisplay}</div>
                     <div>
                         <button class="btn btn-edit" onclick="openEditModal(${rIdx}, '${colSide}', ${bIdx}, ${sIdx}, ${itemIndex}, '${showCols}')">Edit</button>
                         <button class="btn btn-delete" onclick="deleteItem(${rIdx}, '${colSide}', ${bIdx}, ${sIdx}, ${itemIndex})">Delete</button>
                     </div>
                 `;
-            parentDiv.appendChild(row);
-        });
-    }
-
-    /* --- MODAL LOGIC (ADD / EDIT) --- */
-    const modal = document.getElementById('modal');
-
-    function openAddModal(rIdx, colSide, bIdx, sIdx, showCols) {
-        document.getElementById('modal-title').innerText = "Add New Item";
-        document.getElementById('input-name-en').value = '';
-        document.getElementById('input-name-ar').value = '';
-        document.getElementById('input-price').value = '';
-        document.getElementById('input-price-gls').value = '';
-        document.getElementById('input-price-btl').value = '';
-
-        togglePriceInputs(showCols);
-        currentEditTarget = { rIdx, colSide, bIdx, sIdx, itemIndex: null, showCols };
-        modal.style.display = 'flex';
-    }
-
-    function openEditModal(rIdx, colSide, bIdx, sIdx, itemIndex, showCols) {
-        document.getElementById('modal-title').innerText = "Edit Item";
-
-        let itemsArray = sIdx === null
-            ? menuData[rIdx][colSide][bIdx].items
-            : menuData[rIdx][colSide][bIdx].subcategories[sIdx].items;
-
-        let item = itemsArray[itemIndex];
-
-        document.getElementById('input-name-en').value = item.name_en;
-        document.getElementById('input-name-ar').value = item.name_ar;
-
-        togglePriceInputs(showCols);
-
-        if (showCols && showCols !== 'undefined') {
-            document.getElementById('input-price-gls').value = item.price.gls;
-            document.getElementById('input-price-btl').value = item.price.btl;
-        } else {
-            document.getElementById('input-price').value = item.price;
+                parentDiv.appendChild(row);
+            });
         }
 
-        currentEditTarget = { rIdx, colSide, bIdx, sIdx, itemIndex, showCols };
-        modal.style.display = 'flex';
-    }
-
-    function togglePriceInputs(showCols) {
-        if (showCols && showCols !== 'undefined') {
-            document.getElementById('price-single-container').style.display = 'none';
-            document.getElementById('price-dual-container').style.display = 'block';
-        } else {
-            document.getElementById('price-single-container').style.display = 'block';
-            document.getElementById('price-dual-container').style.display = 'none';
-        }
-    }
-
-    function closeModal() {
-        modal.style.display = 'none';
-        currentEditTarget = null;
-    }
-
-    function applyLocalEdit() {
-        const { rIdx, colSide, bIdx, sIdx, itemIndex, showCols } = currentEditTarget;
-
-        let updatedItem = {
-            name_en: document.getElementById('input-name-en').value,
-            name_ar: document.getElementById('input-name-ar').value
-        };
-
-        if (showCols && showCols !== 'undefined') {
-            updatedItem.price = { gls: document.getElementById('input-price-gls').value, btl: document.getElementById('input-price-btl').value };
-        } else {
-            updatedItem.price = document.getElementById('input-price').value;
-        }
-
-        let itemsArray = sIdx === null ? menuData[rIdx][colSide][bIdx].items : menuData[rIdx][colSide][bIdx].subcategories[sIdx].items;
-        if (itemIndex === null) { itemsArray.push(updatedItem); } else { itemsArray[itemIndex] = updatedItem; }
-
-        closeModal();
-        renderAdmin();
-        document.getElementById('status-msg').innerText = "⚠️ You have unsaved changes! Click 'Save' to send to Database.";
-        document.getElementById('status-msg').style.color = "#FF8C00";
-    }
-
-    function deleteItem(rIdx, colSide, bIdx, sIdx, itemIndex) {
-        if(confirm("Are you sure you want to delete this item?")) {
-            let itemsArray = sIdx === null ? menuData[rIdx][colSide][bIdx].items : menuData[rIdx][colSide][bIdx].subcategories[sIdx].items;
-            itemsArray.splice(itemIndex, 1);
-            renderAdmin();
-            document.getElementById('status-msg').innerText = "⚠️ Item deleted! Click 'Save' to send to Database.";
-            document.getElementById('status-msg').style.color = "#FF8C00";
-        }
-    }
-
-    function openAddCategoryModal() {
-        document.getElementById('input-cat-en').value = '';
-        document.getElementById('input-cat-ar').value = '';
-        document.getElementById('category-modal').style.display = 'flex';
-    }
-
-    function closeCategoryModal() {
-        document.getElementById('category-modal').style.display = 'none';
-    }
-
-    function applyLocalCategory() {
-        const newCat = {
-            type: 'category',
-            id: 'cat_' + Date.now().toString(36),
-            title_en: document.getElementById('input-cat-en').value,
-            title_ar: document.getElementById('input-cat-ar').value,
-            items: []
-        };
-        menuData.push({ left: [newCat], right: [] });
-        closeCategoryModal();
-        renderAdmin();
-        document.getElementById('status-msg').innerText = "⚠️ You have unsaved changes! Click 'Save' to send to Database.";
-        document.getElementById('status-msg').style.color = "#FF8C00";
-    }
-
-    function openAddSubcategoryModal(rIdx, colSide, bIdx) {
-        document.getElementById('input-sub-en').value = '';
-        document.getElementById('input-sub-ar').value = '';
-        currentSubcategoryTarget = { rIdx, colSide, bIdx };
-        document.getElementById('subcategory-modal').style.display = 'flex';
-    }
-
-    function closeSubcategoryModal() {
-        document.getElementById('subcategory-modal').style.display = 'none';
-        currentSubcategoryTarget = null;
-    }
-
-    function applyLocalSubcategory() {
-        const { rIdx, colSide, bIdx } = currentSubcategoryTarget;
-        const block = menuData[rIdx][colSide][bIdx];
-        
-        if (!block.subcategories) {
-            block.subcategories = [];
-            if (block.items && block.items.length > 0) {
-                block.subcategories.push({
-                    title_en: "Original Items",
-                    title_ar: "العناصر الأصلية",
-                    items: block.items
-                });
+        /* --- DELETION LOGIC FOR SECTIONS AND SUBSECTIONS --- */
+        function deleteCategory(rIdx, colSide, bIdx) {
+            if (confirm("Are you sure you want to delete this ENTIRE section? This cannot be undone!")) {
+                menuData[rIdx][colSide].splice(bIdx, 1);
+                renderAdmin();
+                triggerUnsavedWarning("⚠️ Section deleted! Click 'Save' to send to Database.");
             }
-            delete block.items;
         }
 
-        block.subcategories.push({
-            title_en: document.getElementById('input-sub-en').value,
-            title_ar: document.getElementById('input-sub-ar').value,
-            items: []
-        });
+        function deleteSubcategory(rIdx, colSide, bIdx, sIdx) {
+            if (confirm("Are you sure you want to delete this subsection and all its items?")) {
+                let block = menuData[rIdx][colSide][bIdx];
+                block.subcategories.splice(sIdx, 1);
 
-        closeSubcategoryModal();
-        renderAdmin();
-        document.getElementById('status-msg').innerText = "⚠️ You have unsaved changes! Click 'Save' to send to Database.";
-        document.getElementById('status-msg').style.color = "#FF8C00";
-    }
+                // If we deleted the last subcategory, convert the section back to a normal item list
+                if (block.subcategories.length === 0) {
+                    delete block.subcategories;
+                    block.items = [];
+                }
 
-    // Start App
-    loadDatabaseData();
+                renderAdmin();
+                triggerUnsavedWarning("⚠️ Subsection deleted! Click 'Save' to send to Database.");
+            }
+        }
 
-</script>
+        function deleteItem(rIdx, colSide, bIdx, sIdx, itemIndex) {
+            if (confirm("Are you sure you want to delete this item?")) {
+                let itemsArray = sIdx === null ? menuData[rIdx][colSide][bIdx].items : menuData[rIdx][colSide][bIdx].subcategories[sIdx].items;
+                itemsArray.splice(itemIndex, 1);
+                renderAdmin();
+                triggerUnsavedWarning("⚠️ Item deleted! Click 'Save' to send to Database.");
+            }
+        }
+
+        function triggerUnsavedWarning(message) {
+            const msgEl = document.getElementById('status-msg');
+            msgEl.innerText = message;
+            msgEl.style.color = "#FF8C00";
+        }
+
+        /* --- MODAL LOGIC (ADD / EDIT) --- */
+        const modal = document.getElementById('modal');
+
+        function openAddModal(rIdx, colSide, bIdx, sIdx, showCols) {
+            document.getElementById('modal-title').innerText = "Add New Item";
+            document.getElementById('input-name-en').value = '';
+            document.getElementById('input-name-ar').value = '';
+            document.getElementById('input-price').value = '';
+            document.getElementById('input-price-gls').value = '';
+            document.getElementById('input-price-btl').value = '';
+
+            togglePriceInputs(showCols);
+            currentEditTarget = { rIdx, colSide, bIdx, sIdx, itemIndex: null, showCols };
+            modal.style.display = 'flex';
+        }
+
+        function openEditModal(rIdx, colSide, bIdx, sIdx, itemIndex, showCols) {
+            document.getElementById('modal-title').innerText = "Edit Item";
+
+            let itemsArray = sIdx === null
+                ? menuData[rIdx][colSide][bIdx].items
+                : menuData[rIdx][colSide][bIdx].subcategories[sIdx].items;
+
+            let item = itemsArray[itemIndex];
+
+            document.getElementById('input-name-en').value = item.name_en;
+            document.getElementById('input-name-ar').value = item.name_ar;
+
+            togglePriceInputs(showCols);
+
+            if (showCols && showCols !== 'undefined') {
+                document.getElementById('input-price-gls').value = item.price.gls;
+                document.getElementById('input-price-btl').value = item.price.btl;
+            } else {
+                document.getElementById('input-price').value = item.price;
+            }
+
+            currentEditTarget = { rIdx, colSide, bIdx, sIdx, itemIndex, showCols };
+            modal.style.display = 'flex';
+        }
+
+        function togglePriceInputs(showCols) {
+            if (showCols && showCols !== 'undefined') {
+                document.getElementById('price-single-container').style.display = 'none';
+                document.getElementById('price-dual-container').style.display = 'block';
+            } else {
+                document.getElementById('price-single-container').style.display = 'block';
+                document.getElementById('price-dual-container').style.display = 'none';
+            }
+        }
+
+        function closeModal() {
+            modal.style.display = 'none';
+            currentEditTarget = null;
+        }
+
+        function applyLocalEdit() {
+            const { rIdx, colSide, bIdx, sIdx, itemIndex, showCols } = currentEditTarget;
+
+            let updatedItem = {
+                name_en: document.getElementById('input-name-en').value,
+                name_ar: document.getElementById('input-name-ar').value
+            };
+
+            if (showCols && showCols !== 'undefined') {
+                updatedItem.price = { gls: document.getElementById('input-price-gls').value, btl: document.getElementById('input-price-btl').value };
+            } else {
+                updatedItem.price = document.getElementById('input-price').value;
+            }
+
+            let itemsArray = sIdx === null ? menuData[rIdx][colSide][bIdx].items : menuData[rIdx][colSide][bIdx].subcategories[sIdx].items;
+            if (itemIndex === null) { itemsArray.push(updatedItem); } else { itemsArray[itemIndex] = updatedItem; }
+
+            closeModal();
+            renderAdmin();
+            triggerUnsavedWarning("⚠️ You have unsaved changes! Click 'Save' to send to Database.");
+        }
+
+        function openAddCategoryModal() {
+            document.getElementById('input-cat-en').value = '';
+            document.getElementById('input-cat-ar').value = '';
+            document.getElementById('category-modal').style.display = 'flex';
+        }
+
+        function closeCategoryModal() {
+            document.getElementById('category-modal').style.display = 'none';
+        }
+
+        function applyLocalCategory() {
+            const newCat = {
+                type: 'category',
+                id: 'cat_' + Date.now().toString(36),
+                title_en: document.getElementById('input-cat-en').value,
+                title_ar: document.getElementById('input-cat-ar').value,
+                items: []
+            };
+            menuData.push({ left: [newCat], right: [] });
+            closeCategoryModal();
+            renderAdmin();
+            triggerUnsavedWarning("⚠️ You have unsaved changes! Click 'Save' to send to Database.");
+        }
+
+        function openAddSubcategoryModal(rIdx, colSide, bIdx) {
+            document.getElementById('input-sub-en').value = '';
+            document.getElementById('input-sub-ar').value = '';
+            currentSubcategoryTarget = { rIdx, colSide, bIdx };
+            document.getElementById('subcategory-modal').style.display = 'flex';
+        }
+
+        function closeSubcategoryModal() {
+            document.getElementById('subcategory-modal').style.display = 'none';
+            currentSubcategoryTarget = null;
+        }
+
+        function applyLocalSubcategory() {
+            const { rIdx, colSide, bIdx } = currentSubcategoryTarget;
+            const block = menuData[rIdx][colSide][bIdx];
+
+            if (!block.subcategories) {
+                block.subcategories = [];
+                if (block.items && block.items.length > 0) {
+                    block.subcategories.push({
+                        title_en: "Original Items",
+                        title_ar: "العناصر الأصلية",
+                        items: block.items
+                    });
+                }
+                delete block.items;
+            }
+
+            block.subcategories.push({
+                title_en: document.getElementById('input-sub-en').value,
+                title_ar: document.getElementById('input-sub-ar').value,
+                items: []
+            });
+
+            closeSubcategoryModal();
+            renderAdmin();
+            triggerUnsavedWarning("⚠️ You have unsaved changes! Click 'Save' to send to Database.");
+        }
+
+        // Start App
+        loadDatabaseData();
+
+    </script>
 </body>
+
 </html>
-///
