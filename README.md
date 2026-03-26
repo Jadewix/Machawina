@@ -34,7 +34,6 @@ Admin capabilities include:
 * Delete menu items
 * Create and manage sections
 * Create and manage subsections
-* Update ingredients and descriptions
 * Modify prices
 * Control menu structure dynamically
 
@@ -204,21 +203,6 @@ data/menu.json
 ```
 
 The admin panel updates this file dynamically through the backend, allowing real-time changes without modifying code.
-
----
-
-# Security
-
-The admin panel is intentionally not publicly exposed in this documentation.
-
-If deploying in production, it is recommended to:
-
-* Add authentication for admin access
-* Protect API routes
-* Validate all inputs
-* Restrict access to admin functionalities
-
----
 
 # Future Improvements
 
